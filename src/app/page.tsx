@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { PrefectureSelector } from "./components/organisms/PrefectureSelector";
+import { PrefectureSelector } from "./components/molecules/PrefectureSelector";
 import { PopulationChart } from "./components/organisms/PopulationChart";
 import { Prefecture } from '@/app/type/types';
 import { useFetchPopulation } from './components/hooks/useFetchPopulation';
+import { Header } from './components/organisms/Header';
 
 export default function Home() {
   const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
@@ -15,8 +16,9 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="w-full">
       <main className="">
+        <Header />
         <PrefectureSelector
           selectedPrefectures={selectedPrefectures}
           onSelect={handlePrefectureSelect}
