@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { getPrefectures } from '@/app/utils/api';
-import { Prefecture } from '@/app/types';
+import { Prefecture } from '@/app/type/types';
 
 export const useFetchPrefectures = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
@@ -11,7 +11,6 @@ export const useFetchPrefectures = () => {
   const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-      
     const fetchPrefectures = async () => {
       try {
         const data = await getPrefectures();
@@ -22,7 +21,8 @@ export const useFetchPrefectures = () => {
         setLoading(false);
       }
     };
-    fetchPrefectures();
-  }, []);  
+		fetchPrefectures();
+	}, []);  
+
     return { prefectures, loading, error };
 }

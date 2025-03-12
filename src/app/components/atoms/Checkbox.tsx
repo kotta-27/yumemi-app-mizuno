@@ -1,6 +1,6 @@
 // チェックボックスコンポーネント
 import React from 'react';
-import { Prefecture } from '@/app/types';
+import { Prefecture } from '@/app/type/types';
 
 interface CheckboxProps {
     checked: boolean;
