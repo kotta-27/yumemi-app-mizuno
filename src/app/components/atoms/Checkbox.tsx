@@ -15,8 +15,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({ checked, onChange, prefectur
                 type="checkbox"
                 checked={checked}
                 onChange={(e) => onChange(e.target.checked)}
+                className="w-6 h-6 cursor-pointer"
             />
-            <label>{prefecture?.prefName}</label>
+            <label className="text-lg">{prefecture?.prefName}</label>
         </div>
     )
 }

@@ -24,7 +24,7 @@ export default function Home() {
           onSelect={handlePrefectureSelect}
         />
         {error && <p>Error: {error.message}</p>}
-        {dataForChart && <PopulationChart data={dataForChart} />}
+        {dataForChart && <PopulationChart data={dataForChart} prefectures={selectedPrefectures} />}
       </main>
       <footer>
       </footer>
