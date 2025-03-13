@@ -9,7 +9,7 @@ import { Header } from './components/organisms/Header';
 
 export default function Home() {
   const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
-  const { dataForChart, error } = useFetchPopulation(selectedPrefectures);
+  const { dataForChart, isLoading, error } = useFetchPopulation(selectedPrefectures);
 
   const handlePrefectureSelect = (prefectures: Prefecture[]) => {
     setSelectedPrefectures(prefectures);
@@ -24,7 +24,7 @@ export default function Home() {
           onSelect={handlePrefectureSelect}
         />
         {error && <p>Error: {error.message}</p>}
-        {dataForChart && <PopulationChart data={dataForChart} prefectures={selectedPrefectures} />}
+        {dataForChart && <PopulationChart data={dataForChart} isLoading={isLoading} prefectures={selectedPrefectures} />}
       </main>
       <footer>
       </footer>

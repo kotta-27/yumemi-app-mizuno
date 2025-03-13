@@ -4,7 +4,7 @@
 import { Checkbox } from '../atoms/Checkbox';
 import { useFetchPrefectures } from '../hooks/useFetchPrefectures';
 import { Prefecture } from '@/app/type/types';
-import { LoadingSpinner } from '../atoms/LoadingSpiner';
+import { LoadingSpinner } from '../atoms/LoadingSpinner';
 
 export const PrefectureSelector = ({ selectedPrefectures, onSelect }: { selectedPrefectures: Prefecture[], onSelect: (prefectures: Prefecture[]) => void }) => {
     const { prefectures, loading, error } = useFetchPrefectures();

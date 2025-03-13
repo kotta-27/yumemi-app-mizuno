@@ -1,6 +1,6 @@
 import { Prefecture, PrefecturesResponse, PopulationCompositionResponse } from "@/app/type/types";
 
-const BASE_URL = "https://yumemi-frontend-engineer-codecheck-api.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const API_KEY = process.env.NEXT_PUBLIC_X_API_KEY;
 
 // 都道府県一覧を取得するAPI

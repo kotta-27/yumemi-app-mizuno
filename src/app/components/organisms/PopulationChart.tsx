@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { LoadingSpinner } from '../atoms/LoadingSpinner';
 import { PopulationDataWithPrefCode, Prefecture } from '@/app/type/types';
 
 interface PopulationChartProps {
     data: PopulationDataWithPrefCode[];
+    isLoading: boolean;
     prefectures: Prefecture[];
 }
 
-export const PopulationChart: React.FC<PopulationChartProps> = ({ data, prefectures }) => {
+export const PopulationChart: React.FC<PopulationChartProps> = ({ data, isLoading, prefectures }) => {
     const [selectedCategory, setSelectedCategory] = useState<string>('総人口');
 
     // データを都道府県ごとにグループ化
@@ -39,6 +41,7 @@ export const PopulationChart: React.FC<PopulationChartProps> = ({ data, prefectu
                 <p className="text-base sm:text-2xl font-bold bg-white dark:bg-black rounded-md p-2 border-3 border-gray-300">人口チャート</p>
             </div>
             {data.length === 0 && <p>都道府県を選択してください</p>}
+            {data.length == 0 && isLoading && <LoadingSpinner hScreen={false} />}
             {data.length > 0 && (
                 <>
                     <div className='mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2'>
@@ -83,7 +86,7 @@ export const PopulationChart: React.FC<PopulationChartProps> = ({ data, prefectu
                                     type="monotone"
                                     dataKey={`Prefecture ${prefCode}`}
                                     name={prefectures.find(pref => pref.prefCode === parseInt(prefCode))?.prefName}
-                                    stroke={colors[index % colors.length]} 
+                                    stroke={colors[index % colors.length]}
                                     strokeWidth={2.5}
                                     connectNulls
                                 />

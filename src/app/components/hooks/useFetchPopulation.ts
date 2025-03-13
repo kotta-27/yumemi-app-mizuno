@@ -5,11 +5,13 @@ import { Prefecture, PopulationDataWithPrefCode } from '@/app/type/types';
 export const useFetchPopulation = (selectedPrefectures: Prefecture[]) => {
     const [dataForChart, setDataForChart] = useState<PopulationDataWithPrefCode[]>([]);
     const [error, setError] = useState<Error | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [cache, setCache] = useState<Record<number, PopulationDataWithPrefCode>>({});
 
     useEffect(() => {
         const fetchPopulationData = async () => {
             try {
+                setIsLoading(true);
                 const newCache: Record<number, PopulationDataWithPrefCode> = {};
                 const prefecturesToFetch = selectedPrefectures.filter(prefecture => !cache[prefecture.prefCode]);
                 const data = await Promise.all(prefecturesToFetch.map(async (prefecture) => {
@@ -26,6 +28,8 @@ export const useFetchPopulation = (selectedPrefectures: Prefecture[]) => {
                 setCache(updatedCache);
             } catch (err) {
                 setError(err as Error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -36,5 +40,5 @@ export const useFetchPopulation = (selectedPrefectures: Prefecture[]) => {
         }
     }, [selectedPrefectures]);
 
-    return { dataForChart, error };
+    return { dataForChart, isLoading, error };
 };
