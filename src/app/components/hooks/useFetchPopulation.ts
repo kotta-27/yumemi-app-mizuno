@@ -3,39 +3,38 @@ import { getPopulationData } from '@/app/utils/api';
 import { Prefecture, PopulationDataWithPrefCode } from '@/app/type/types';
 
 export const useFetchPopulation = (selectedPrefectures: Prefecture[]) => {
-    const [populationDataList, setPopulationDataList] = useState<PopulationDataWithPrefCode[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [dataForChart, setDataForChart] = useState<PopulationDataWithPrefCode[]>([]);
     const [error, setError] = useState<Error | null>(null);
+    const [cache, setCache] = useState<Record<number, PopulationDataWithPrefCode>>({});
 
     useEffect(() => {
         const fetchPopulationData = async () => {
             try {
-                const data = await Promise.all(selectedPrefectures.map(async (prefecture) => {
+                const newCache: Record<number, PopulationDataWithPrefCode> = {};
+                const prefecturesToFetch = selectedPrefectures.filter(prefecture => !cache[prefecture.prefCode]);
+                const data = await Promise.all(prefecturesToFetch.map(async (prefecture) => {
                     const response = await getPopulationData(prefecture);
-                    return response.result.data.flatMap((populationCategory: { label: string, data: any[] }) => 
-                        populationCategory.data.map((item: { year: number, value: number }) => ({
-                            year: item.year,
-                            value: item.value,
-                            prefCode: prefecture.prefCode,
-                            label: populationCategory.label
-                        }))
-                    ); 
+                    newCache[prefecture.prefCode] = {
+                        prefCode: prefecture.prefCode,
+                        data: response.result.data
+                    };
+                    return newCache[prefecture.prefCode];
                 }));
-                setPopulationDataList(data.flat());
-                setLoading(false);
+                console.log("data", data);
+                const updatedCache = { ...cache, ...newCache };
+                setDataForChart(selectedPrefectures.map(prefecture => updatedCache[prefecture.prefCode]));
+                setCache(updatedCache);
             } catch (err) {
                 setError(err as Error);
-                setLoading(false);
             }
         };
 
         if (selectedPrefectures.length > 0) {
             fetchPopulationData();
         } else {
-            setPopulationDataList([]);
-            setLoading(false);
+            setDataForChart([]);
         }
     }, [selectedPrefectures]);
 
-    return { populationDataList, loading, error };
+    return { dataForChart, error };
 };

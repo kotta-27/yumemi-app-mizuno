@@ -17,7 +17,9 @@ export const PrefectureSelector = ({ selectedPrefectures, onSelect }: { selected
     };
 
     return (
-        <div>
+        <div className="w-1/2 mx-auto mt-4">
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error.message}</p>}
             <div className="grid grid-cols-4 gap-4">
                 {prefectures.map((prefecture) => (
                     <Checkbox

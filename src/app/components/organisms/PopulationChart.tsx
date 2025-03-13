@@ -22,22 +22,22 @@ export const PopulationChart: React.FC<PopulationChartProps> = ({ data }) => {
     const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#387908'];
 
     // 共通の year を基準にしたデータを作成
-    const years = Array.from(new Set(data.map(d => d.year))).sort((a, b) => a - b);
+    const years = Array.from(new Set(data.flatMap(d => d.data.flatMap(category => category.data.map(item => item.year))))).sort((a, b) => a - b);
 
     const chartData = years.map(year => {
-        const entry: Record<string, number | string> = { year };
+        const entry: Record<string, number | string | undefined> = { year };
         Object.entries(groupedData).forEach(([prefCode, prefData]) => {
-            const population = prefData.find(d => d.year === year && d.label === selectedCategory);
-            entry[`Prefecture ${prefCode}`] = population ? population.value : null;
+            const population = prefData.flatMap(d => d.data).find(category => category.label === selectedCategory)?.data.find(d => d.year === year);
+            entry[`Prefecture ${prefCode}`] = population ? population.value : undefined;
         });
         return entry;
     });
 
     return (
-        <div>
+        <div className="flex flex-col items-center w-5/6 mx-auto mt-4">
             <p>人口チャート</p>
-            {!data.length && <p>データがありません</p>}
-            {data.length && (
+            {data.length === 0 && <p>都道府県を選択してください</p>}
+            {data.length > 0 && (
                 <>
                     <div>
                         {['総人口', '年少人口', '生産年齢人口', '老年人口'].map(category => (

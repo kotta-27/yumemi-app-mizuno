@@ -35,6 +35,9 @@ export type PopulationCompositionResponse = {
 // predCodeを含む人口データの型
 export type PopulationDataWithPrefCode = {
     prefCode: number;
-    data: PopulationCompositionPerYear;
+    data: {
+        label: string;
+        data: PopulationData[];
+    }[];
 };
 
